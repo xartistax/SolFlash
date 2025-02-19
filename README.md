@@ -76,6 +76,12 @@ python main.py
 
 ---
 
+## 🛣️ Roadmap
+
+🔗 **GitHub:** [📜 Project Roadmap](https://github.com/xartistax/SolFlash/blob/main/Docs/ROADMAP.md)
+
+---
+
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE).

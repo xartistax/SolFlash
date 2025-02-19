@@ -23,7 +23,7 @@
 - 🤖 Implement the Telegram bot
 - 🔍 Develop a filter  
   - 🎯 **Goal:** Only trade tokens with a market cap above **$1M**.
-- � Implement API rate-limit filtering
+- 🚦 Implement API rate-limit filtering
 
 ### ⏳ In Progress
 - 📝 Implement paper trading function (Buy/Sell)
@@ -31,11 +31,8 @@
 ---
 
 ## 📌 Phase 3: Optimization
-### ⏳ In Progress
-- 🛡️ Add security modules
-- 🎯 Optimize the strategy manager
-
 ### 🚀 Upcoming Tasks
+- 🛡️ Add security modules
 - 📊 Analyze trades
 - 🧠 Implement AI  
   - 📥 Collect data  
@@ -46,7 +43,7 @@
 
 ---
 
-## � Completed Overview
+## ✅ Completed Overview
 - ✅ Set up a virtual environment
 - ✅ Prepare the `.env` file
 - ✅ Test API integration
@@ -70,7 +67,7 @@ Develop a paper trading system to simulate buying and selling tokens without usi
    - Implement Buy/Sell functions that mimic real transactions.
 
 2. **Integrate with Existing Modules:**
-   - Connect the paper trading module to the transaction handler and strategy manager.
+   - Connect the paper trading module to the transaction handler.
    - Ensure the filter and rug checker are applied to paper trades.
 
 3. **Simulate Market Conditions:**
@@ -90,3 +87,4 @@ Develop a paper trading system to simulate buying and selling tokens without usi
    - Ensure it works seamlessly with the rest of the system.
 
 ---
+

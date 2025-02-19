@@ -1,33 +1,33 @@
 # 🚀 Sniping Bot
 
-## 📌 Projektübersicht
+## 📌 Project Overview
 
-Ein leistungsstarker Sniping-Bot für den Kryptomarkt. Dieser Bot hilft, neue Token schnell zu erkennen, sicher zu handeln und profitabel zu verwalten.
+A powerful sniping bot for the crypto market. This bot helps detect new tokens quickly, trade securely, and manage them profitably.
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
-Ein guter Sniping-Bot benötigt fünf Hauptmodule:
+A good sniping bot requires five main modules:
 
-1. **📡 Listener (Liquidity Scanner)**\
-   🔹 Überwacht neue Token-Listings und erkennt Handelsmöglichkeiten in Echtzeit.
+1. **📡 Listener (Liquidity Scanner)**  
+   🔹 Monitors new token listings and detects trading opportunities in real time.
 
-2. **⚡ Transaction Handler**\
-   🔹 Führt Kauf- und Verkaufsorders blitzschnell aus, um von Marktchancen zu profitieren.
+2. **⚡ Transaction Handler**  
+   🔹 Executes buy and sell orders instantly to capitalize on market opportunities.
 
-3. **🛡 Security Module**\
-   🔹 Erkennt und blockiert Scams & Honeypots, um Verluste zu vermeiden.
+3. **🛡 Security Module**  
+   🔹 Identifies and blocks scams & honeypots to prevent losses.
 
-4. **📊 Strategy Manager**\
-   🔹 Setzt automatisierte Handelsstrategien wie Take-Profit, Stop-Loss und MEV-Schutz um.
+4. **📊 Strategy Manager**  
+   🔹 Implements automated trading strategies like take-profit, stop-loss, and MEV protection.
 
-5. **🛠 Utility & Config**\
-   🔹 Verwaltung von Wallets, Logging, API-Keys und weiteren Konfigurationen.
+5. **🛠 Utility & Config**  
+   🔹 Manages wallets, logging, API keys, and other configurations.
 
 ---
 
 ## 🛠 Installation & Setup
 
-### 1️⃣ Erstelle und aktiviere eine virtuelle Umgebung
+### 1️⃣ Create and activate a virtual environment
 
 ```sh
 python -m venv venv
@@ -35,15 +35,15 @@ source venv/bin/activate  # Mac/Linux
 venv\Scripts\activate    # Windows
 ```
 
-### 2️⃣ Installiere die Abhängigkeiten
+### 2️⃣ Install dependencies
 
 ```sh
 pip install -r requirements.txt
 ```
 
-### 3️⃣ Konfiguriere deine Umgebungsvariablen
+### 3️⃣ Configure your environment variables
 
-Erstelle eine `.env` Datei und setze deine API-Schlüssel:
+Create a `.env` file and set your API keys:
 
 ```sh
 HELIUS_API_KEY="your_helius_api_key_here"
@@ -62,14 +62,13 @@ RUGCHECK_TOKEN_ROUTE_SUMMARY="tokens/{mint}/report/summary"
 TELEGRAM_API="your_telegram_api_key_here"
 TELEGRAM_URL="https://api.telegram.org/bot${TELEGRAM_API}/{method}"
 TELEGRAM_CHAT="your_telegram_chat_id_here"
-
 ```
 
 ---
 
-## 🚀 Nutzung
+## 🚀 Usage
 
-Starte den Bot mit:
+Start the bot with:
 
 ```sh
 python main.py
@@ -77,13 +76,13 @@ python main.py
 
 ---
 
-## 📜 Lizenz
+## 📜 License
 
-Dieses Projekt steht unter der [MIT-Lizenz](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🤝 Kontakt
+## 🤝 Contact
 
 📌 GitHub: [xartistax](https://github.com/xartistax)
 

@@ -1,3 +1,4 @@
+from app_config.app_config import AppConfig
 from services.api_client import APIClient
 from services.logger import setup_logger
 from services.env import ConfigENV
@@ -16,7 +17,11 @@ def tx_api_call(signature: str):
         dict: A dictionary containing the success status, response data, and status code.
     """
     tx_url = ConfigENV.HELIUS_TX_URL
-    api_client = APIClient(rate_limit=10, time_window=60, max_retries=6)
+
+    api_client = APIClient(
+        rate_limit=AppConfig.APICLIENT.get("RATE_LIMIT") , 
+        time_window=AppConfig.APICLIENT.get("TIME_WINDOW"),
+        max_retries=AppConfig.APICLIENT.get("MAX_RETRIES"))
 
     try:
         # Make API request

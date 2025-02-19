@@ -3,6 +3,16 @@ class AppConfig:
     BOTNAME = "SOLFLASH"
 
     MAINNET = True
+    
+    PAPER_TRADER = {
+        "ENABLED": True,
+        "SETTINGS" : {
+            "initial_balance": 1000,  # Startkapital in USDC
+            "slippage_pct": 0.5,  # Slippage in Prozent
+            "fee_pct": 0.3,  # Handelsgebühr in Prozent
+            "market_prices": {"SOL": 100, "BTC": 45000, "ETH": 3000}  # Simulierte Marktpreise
+        }
+    }
 
     LOGGER = {
         "LOG_DIR": "logs",
@@ -12,7 +22,10 @@ class AppConfig:
     APICLIENT = {
         "TIMEOUT": 10000,  # Timeout for API requests in milliseconds
         "RETRY_DELAY": 3000,  # Initial delay (in milliseconds) between retries for rate-limited responses (429)
-        "MAX_RETRIES": 5  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
+        "MAX_RETRIES": 5,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
+        "RATE_LIMIT": 10,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
+        "TIME_WINDOW": 6
+    
     }
  
     DEXSCREENER = {
@@ -38,12 +51,7 @@ class AppConfig:
 
     
 
-    PAPER_TRADER = {
-        "initial_balance": 1000,  # Startkapital in USDC
-        "slippage_pct": 0.5,  # Slippage in Prozent
-        "fee_pct": 0.3,  # Handelsgebühr in Prozent
-        "market_prices": {"SOL": 100, "BTC": 45000, "ETH": 3000}  # Simulierte Marktpreise
-    }
+    
 
 
 

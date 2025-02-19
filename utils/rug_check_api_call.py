@@ -1,3 +1,4 @@
+from app_config.app_config import AppConfig
 from services.api_client import APIClient
 
 from services.env import ConfigENV
@@ -29,7 +30,10 @@ def rug_check_api_call(mint_address: str, summary=True):
 
 
     # Initialize API client with rate limiting and retries
-    api_client = APIClient(rate_limit=10, time_window=60, max_retries=6)
+    api_client = APIClient(
+        rate_limit=AppConfig.APICLIENT.get("RATE_LIMIT") , 
+        time_window=AppConfig.APICLIENT.get("TIME_WINDOW"),
+        max_retries=AppConfig.APICLIENT.get("MAX_RETRIES"))
 
 
 

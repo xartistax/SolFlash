@@ -55,7 +55,7 @@ class APIClient:
                     retries += 1
                     if retries <= self.max_retries:
                         # Exponential backoff: sleep for 2^retries seconds, capped at 30 seconds
-                        sleep_time = min(2 ** retries, 30)
+                        sleep_time = min(AppConfig.APICLIENT.get("RETRY_DELAY") / 1000 ** retries, 30)
                         logger.warning(f"Retry {retries}/{self.max_retries} for URL: {url}. Error: {e}. Sleeping for {sleep_time} seconds...")
                         time.sleep(sleep_time)
                     else:

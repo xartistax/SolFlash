@@ -1,3 +1,4 @@
+from app_config.app_config import AppConfig
 from services.api_client import APIClient
 from services.env import ConfigENV
 from services.logger import setup_logger
@@ -50,7 +51,10 @@ def dexscreener_api_call(mint_address: str):
     dexscreener_url = f"{dexscreener_api.format(mint=mint_address)}"
 
     # Initialize the API client with rate limit and retry settings
-    api_client = APIClient(rate_limit=10, time_window=60, max_retries=6)
+    api_client = APIClient(
+        rate_limit=AppConfig.APICLIENT.get("RATE_LIMIT") , 
+        time_window=AppConfig.APICLIENT.get("TIME_WINDOW"),
+        max_retries=AppConfig.APICLIENT.get("MAX_RETRIES"))
 
     try:
         # Make the API call and get both the response data and status code

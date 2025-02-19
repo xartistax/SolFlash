@@ -37,6 +37,7 @@ def send_message_to_telegram(token):
 
         # Initialize API client and send the message to Telegram
         api_client = APIClient()
+        
         response_data, status_code = api_client.post(
             telegram_url, 
             {

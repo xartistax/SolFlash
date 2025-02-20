@@ -36,10 +36,10 @@ def tx_api_call(signature: str):
 
         # Check if response data is empty or invalid
         if not response_data:
-            logger.warning(f"Signature: {signature[:6]} - No transaction data found. Skipping...")
+            logger.info(f"Signature: {signature[:6]} - No transaction data found. Skipping...")
             return {"success": False, "status_code": status_code}
 
-        logger.debug(f"Signature: {signature[:6]} - Found transaction data. Processing further.")
+        logger.info(f"Signature: {signature[:6]} - Found transaction data. Processing further.")
         return {"success": True, "response": response_data, "status_code": status_code}
 
     except Exception as e:

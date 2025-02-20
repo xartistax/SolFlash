@@ -1,3 +1,4 @@
+from datetime import datetime
 from services.logger import setup_logger
 
 logger = setup_logger("TOKEN PRINT")
@@ -6,10 +7,13 @@ def print_token_alert(token_data):
     """Generates a formatted alert message for new tokens in a single line."""
 
 
+    current_timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+
     
     # Construct the formatted message in one line
     alert_message = (
-        f"Address: {token_data['address']} | "
+        f"{current_timestamp} | "
+        f"{token_data['address']} | "
         f"Name: {token_data['name']} | "
         f"Symbol: {token_data['symbol']} | "
         f"MarketCap: {token_data['market_cap']} | "

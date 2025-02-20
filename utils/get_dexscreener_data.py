@@ -12,40 +12,41 @@ async def get_dexscreener_data(token: str):
 
     Args:
         token (str): The token address or mint address to fetch data for.
-        rugcheck (bool): Flag to determine whether to perform a rug-check validation on the token.
 
     Returns:
-        None: The function processes the token data and logs results or errors.
+        dict or None: The first response from DexScreener if successful, else None.
     """
 
-    # Fetch data from DexScreener API
-    data = dexscreener_api_call(token)
-    success = data.get("success")
+    if not token:
+        logger.warning("Invalid token provided. Skipping...")
+        return None
 
-    
-    
-    # Check if the data is None or if the 'success' key is missing
-    if not data or not success:
-        logger.error(f"Error fetching DexScreener data for token: {token}")
-        return
-    
-    response = data.get("response")
-    if not response:
-        logger.error(f"No valid response found for token: {token}")
-        return 
+    logger.debug(f"Fetching DexScreener data for Token: {token}...")
 
-    first_response = response[0]
+    try:
+        data = dexscreener_api_call(token)
+        if not data:
+            logger.error(f"Token {token} - API response is None. Skipping...")
+            return None
+        
+        success = data.get("success")
+        if not success:
+            logger.error(f"Token {token} - DexScreener API call failed. Response: {data}")
+            return None
 
-    # Check if first_response is None or empty
-    if not first_response:
-        logger.error(f"No data found for the first response of token: {token}")
-        return 
-    
+        response = data.get("response")
+        if not response:
+            logger.error(f"Token {token} - Empty 'response' field. Skipping...")
+            return None
 
-    if COIN_FILTER.enabled:
-        if not COIN_FILTER.is_valid(first_response):
-            logger.warning(f"Token {token} failed the filter checks")
-            return
+        first_response = response[0] if response else None
+        if not first_response:
+            logger.error(f"Token {token} - No data found in the first response. Skipping...")
+            return None
 
-    # Process token if valid
-    process_token(response)
+        logger.debug(f"Token {token} - Successfully fetched DexScreener data.")
+        return first_response
+
+    except Exception as e:
+        logger.error(f"Token {token} - Unexpected error while fetching DexScreener data: {e}", exc_info=True)
+        return None

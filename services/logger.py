@@ -53,7 +53,7 @@ def setup_logger(name="MainLogger"):
 
     # Console-Handler (ohne Farben), level from config
     console_handler = logging.StreamHandler()
-    console_level = LOGGING_LEVEL_MAP.get(AppConfig.LOGGER.get("LEVEL"), logging.INFO)  # Use config for console
+    console_level = LOGGING_LEVEL_MAP.get(AppConfig.LOGGER.get("CONSOLE_LEVEL"), logging.INFO)  # Use config for console
     console_handler.setLevel(console_level)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
@@ -63,7 +63,8 @@ def setup_logger(name="MainLogger"):
     log_filepath = os.path.join(LOG_DIR, log_filename)
 
     file_handler = logging.FileHandler(log_filepath, mode="a", encoding="utf-8")
-    file_handler.setLevel(logging.DEBUG)  # Force file handler to always log at DEBUG level
+    file_level = LOGGING_LEVEL_MAP.get(AppConfig.LOGGER.get("FILE_LEVEL"), logging.INFO)  # Use config for console
+    file_handler.setLevel(file_level)  # Force file handler to always log at DEBUG level
     file_handler.setFormatter(ColorizedFileFormatter(formatter._fmt))
     logger.addHandler(file_handler)
 

@@ -16,12 +16,14 @@ class AppConfig:
 
     LOGGER = {
         "LOG_DIR": "logs",
-        "LEVEL": "WARNING"  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
+        "FILE_LEVEL": "ERROR",  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
+        "CONSOLE_LEVEL": "WARNING",  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
+        "TOKENFILE_NAME": "tokens.txt"
     }
 
 
     APICLIENT = {
-        "TIMEOUT": 3000,  # Timeout for API requests in milliseconds
+        "TIMEOUT": 10000,  # Timeout for API requests in milliseconds
         "RETRY_DELAY": 10000,  # Initial delay between retries (in milliseconds) for rate-limited responses (429)
         "MAX_RETRIES": 6,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
         "RATE_LIMIT": 30,  # Maximum number of requests allowed in the given time window
@@ -35,11 +37,7 @@ class AppConfig:
         "FETCH_DELAY" : 30000
     }
 
-    TX = {
-        "FETCH_TX_MAX_RETRIES": 1000,
-        "FETCH_TX_INITIAL_DELAY": 3000,
-        "TIMEOUT": 10000
-    }
+
 
     LIQUIDITY_POOL = {
         "RADIYUM_PROGRAM_ID": "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8",

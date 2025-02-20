@@ -27,11 +27,11 @@ async def fetch_transaction_details(signature: str) -> dict | None:
         tx_data_raw = tx_api_call(signature)
 
         if not tx_data_raw.get("success"):
-            logger.warning(f"Signature: {signature[:6]} - Failed to fetch transaction data. Retrying...")
+            logger.info(f"Signature: {signature[:6]} - Failed to fetch transaction data. Retrying...")
 
         transaction_data = tx_data_raw.get("response")
         if not transaction_data:
-            logger.warning(f"Signature: {signature[:6]} - No transaction data found!")
+            logger.info(f"Signature: {signature[:6]} - No transaction data found!")
             return None
 
         first_transaction_data = transaction_data[0]
@@ -39,7 +39,7 @@ async def fetch_transaction_details(signature: str) -> dict | None:
         # Check if the transaction has instructions
         instructions = first_transaction_data.get("instructions", [])
         if not instructions:
-            logger.warning(f"Signature: {signature[:6]} - No instructions found in the transaction! Skipping...")
+            logger.info(f"Signature: {signature[:6]} - No instructions found in the transaction! Skipping...")
             return None
 
         # Find Raydium instructions
@@ -47,7 +47,7 @@ async def fetch_transaction_details(signature: str) -> dict | None:
         matched_instructions = next((ix for ix in instructions if ix.get("programId") == ray_id), None)
 
         if not matched_instructions:
-            logger.warning(f"Signature: {signature[:6]} - No Raydium instructions found in the transaction! Skipping...")
+            logger.info(f"Signature: {signature[:6]} - No Raydium instructions found in the transaction! Skipping...")
             return None
 
         # Extract token mint addresses from tokenTransfers
@@ -57,7 +57,7 @@ async def fetch_transaction_details(signature: str) -> dict | None:
         if token:
             return token
 
-        logger.warning(f"Signature: {signature[:6]} - No token transfer found in the transaction!")
+        logger.info(f"Signature: {signature[:6]} - No token transfer found in the transaction!")
         return None
 
     except ValueError as e:

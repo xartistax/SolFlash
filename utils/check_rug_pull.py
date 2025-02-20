@@ -1,12 +1,9 @@
+import time
 from typing import Union
 from app_config.app_config import AppConfig
 from settings.settings import RUGCHECK
 from utils.rug_check_api_call import rug_check_api_call
-
-
-
 from services.logger import setup_logger
-
 
 logger = setup_logger("RUGCHECK")
 
@@ -24,12 +21,24 @@ async def check_rug_pull(token_mint: str) -> Union[bool, dict]:
         return False
     
     try:
-        # Perform API calls to get both the full report and summary
+        # Perform the first API call to get the full report
         rug_check_report = rug_check_api_call(token_mint, False)
+        
+        # Check if the first API call failed
+        if not rug_check_report.get("success"):
+            logger.error("Failed to fetch RugCheck full report.")
+            return False
+        
+        # Respect the rate limit before making the second API call
+        # Example: Sleep for 1 second (adjust based on API rate limits)
+        time.sleep(  AppConfig.APICLIENT.get("TIMEOUT") / 1000  )  # Replace with your rate limit logic if needed
+        
+        # Perform the second API call to get the summary
         rug_check_summary = rug_check_api_call(token_mint)
         
-        # If either of the API calls fails, return False (indicating an issue)
-        if not rug_check_report.get("success") or not rug_check_summary.get("success"):
+        # Check if the second API call failed
+        if not rug_check_summary.get("success"):
+            logger.error("Failed to fetch RugCheck summary.")
             return False
         
         # Extract response data from the successful API calls
@@ -70,8 +79,6 @@ async def check_rug_pull(token_mint: str) -> Union[bool, dict]:
                 "rugged": token.get("rugged", True)
             }
         }
-
-
     
     except KeyError as e:
         logger.error(f"No Key: {e}")
@@ -85,4 +92,3 @@ async def check_rug_pull(token_mint: str) -> Union[bool, dict]:
 
     # Return the detailed report if everything checks out
     return report
-

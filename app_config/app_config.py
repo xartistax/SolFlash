@@ -16,18 +16,20 @@ class AppConfig:
 
     LOGGER = {
         "LOG_DIR": "logs",
-        "LEVEL": "INFO"  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
+        "LEVEL": "WARNING"  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
     }
 
+
     APICLIENT = {
-        "TIMEOUT": 10000,  # Timeout for API requests in milliseconds
-        "RETRY_DELAY": 3000,  # Initial delay (in milliseconds) between retries for rate-limited responses (429)
-        "MAX_RETRIES": 5,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
-        "RATE_LIMIT": 10,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
-        "TIME_WINDOW": 6
-    
+        "TIMEOUT": 3000,  # Timeout for API requests in milliseconds
+        "RETRY_DELAY": 10000,  # Initial delay between retries (in milliseconds) for rate-limited responses (429)
+        "MAX_RETRIES": 6,  # Maximum number of retries when a 429 status code (Too Many Requests) is encountered
+        "RATE_LIMIT": 30,  # Maximum number of requests allowed in the given time window
+        "TIME_WINDOW": 60,  # Time window in seconds (you might want to extend this to 60 seconds)
     }
- 
+
+
+
     DEXSCREENER = {
         "MAX_RETRIES" : 10,
         "FETCH_DELAY" : 30000

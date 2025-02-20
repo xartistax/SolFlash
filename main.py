@@ -30,6 +30,6 @@ if __name__ == "__main__":
     main()
     client = HeliusWebSocketClient()
     asyncio.get_event_loop().run_until_complete(client.connect())
-    #print(asyncio.get_event_loop().run_until_complete(check_rug_pull("8udqdv6fGJDGwt25PuRFAwcSNv68retDF6UFdXGKpump")))
+
 
     

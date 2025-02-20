@@ -12,7 +12,7 @@ class CoinFilter:
         enabled=True,
         min_marketcap=None,
         max_marketcap=None,
-        min_volume=None,
+        min_volume_5m=None,
         max_volume=None,
         blacklist=None,
         whitelist=None,
@@ -33,7 +33,7 @@ class CoinFilter:
         self.enabled = enabled
         self.min_marketcap = min_marketcap
         self.max_marketcap = max_marketcap
-        self.min_volume = min_volume
+        self.min_volume_5m = min_volume_5m
         self.max_volume = max_volume
         self.blacklist = set(blacklist) if blacklist else set()
         self.whitelist = set(whitelist) if whitelist else set()
@@ -174,7 +174,7 @@ class CoinFilter:
         if self.max_marketcap is not None and marketcap > self.max_marketcap:
             logger.warning(f"Rejecting coin: marketCap {marketcap} > max_marketcap {self.max_marketcap}")
             return False
-        if self.min_volume is not None and volume < self.min_volume:
+        if self.min_volume_5m is not None and volume < self.min_volume_5m:
             logger.warning(f"Rejecting coin: volume {volume} < min_volume {self.min_volume}")
             return False
         if self.max_volume is not None and volume > self.max_volume:

@@ -42,7 +42,7 @@ COINFILTER = {
     "ENABLED": True,
     "SOCIALS": True,
     "MIN_MCAP": 25_000,             # Minimum market cap to avoid micro-cap scams
-    "MIN_VOL": 5_000,              # Minimum volume to ensure liquidity
+    "MIN_VOL_5M": 5_000,              # Minimum volume to ensure liquidity
     "MIN_LIQUIDITY_USD": 10_000,     # Stellt sicher, dass Coins genug Liquidität haben  
     "MAX_FDV_RATIO": 3,              # Vermeidet Coins mit überhöhter Fully Diluted Valuation (FDV)  
     "MIN_PRICE_CHANGE_5M": 2.5,    # The price change in the last 5 minutes (in percentage).,

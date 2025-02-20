@@ -8,7 +8,7 @@ COIN_FILTER = CoinFilter(
     enabled=COINFILTER["ENABLED"], 
     min_marketcap=COINFILTER["MIN_MCAP"], 
 
-    min_volume=COINFILTER["MIN_VOL"],
+    min_volume_5m=COINFILTER["MIN_VOL_5M"],
 
 
     blacklist=COINFILTER["BLACKLIST"],  # Ensure this is passed

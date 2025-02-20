@@ -22,6 +22,11 @@ class ConfigENV:
         "HELIUS_API_KEY": os.getenv("HELIUS_API_KEY", None),
         "TELEGRAM_URL": os.getenv("TELEGRAM_URL", None),
         "TELEGRAM_CHAT": os.getenv("TELEGRAM_CHAT", None),
+        "PGHOST": os.getenv("PGHOST", None),
+        "PGDATABASE": os.getenv("PGDATABASE", None),
+        "PGUSER": os.getenv("PGUSER", None),
+        "PGPASSWORD": os.getenv("PGPASSWORD", None),
+
     }
 
     @classmethod

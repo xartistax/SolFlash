@@ -38,15 +38,28 @@ def extract_token_data(token):
     else:
         created_time = "Unknown"  # Default if missing
 
+
+    print(token)
+
     # Extract and format data safely
     return {
         "address": token.get("baseToken", {}).get("address", "Unknown"),
         "name": token.get("baseToken", {}).get("name", "Unknown"),
         "symbol": token.get("baseToken", {}).get("symbol", "Unknown"),
-        "market_cap": format_number(float(token.get("marketCap", 0) or 0), locale='de_DE'),  # Handle None safely
-        "price_usd": token.get("priceUsd") if isinstance(token.get("priceUsd"), (int, float)) else 0,  # Ensure numeric value
+        "market_cap": float(token.get("marketCap", 0) or 0),  # Handle None safely
+        "price_usd": float(token.get("priceUsd", 0) or 0),  # Ensure numeric value
         "volume_5m": token.get("volume", {}).get("m5", "N/A"),
+        "price_change_5m" : token.get("priceChange", {}).get("m5", 0),
+        "txn_buy_5min" : token.get("txns", {}).get("m5", {}).get("buys", 0),
+        "txn_sell_5min": token.get("txns", {}).get("m5", {}).get("sells", 0),
+        "liquidity_usd" : token.get("liquidity", {}).get("usd", 0),
+        "fdv": token.get("fdv", 0),
         "url": token.get("url", "N/A"),
         "created": created_time,
+        "created_raw": token.get("pairCreatedAt"),
         "social_links": social_links  # Default value, will update if available
+        
+
+        
+
     }

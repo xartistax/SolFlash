@@ -2,6 +2,7 @@ import os
 
 from app_config.app_config import AppConfig
 from services.logger import setup_logger
+from utils.add_token_to_db import add_token_to_db
 from utils.is_token_in_file import is_token_in_file
 from utils.cyan_message import cyan_message
 from utils.print_token_alert import print_token_alert
@@ -45,6 +46,9 @@ def process_token(token):
         logger.debug(f"Token {token_address} - Writing data to file...")
 
         write_token_data_to_file(token_data)
+        add_token_to_db(token_data)
+        
+
 
         if AppConfig.TELEGRAM.get("ENABLED"):
             result = send_message_to_telegram(token_data)

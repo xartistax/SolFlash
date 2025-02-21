@@ -1,14 +1,38 @@
+import os
+import shutil
+from app_config.app_config import AppConfig
+from services.database import PostgresDB
 from services.env import ConfigENV
 from services.logger import setup_logger
+from utils.add_token_to_db import db_connect
 
-logger = setup_logger("SETUP")
+
 
 def setup():
     """Initialize environment and check configuration."""
     
     try:
+        if AppConfig.DEVELOPMENT:
+            log_dir = AppConfig.LOGGER.get("LOG_DIR")
+
+            db = db_connect()
+            db.truncate_table(AppConfig.DB_TRADE_TABLE)
+
+            # Remove the existing log directory
+            if os.path.exists(log_dir):
+                shutil.rmtree(log_dir)
+
+                logger = setup_logger("SETUP")
+                logger.info(f"Removed existing log directory: {log_dir}")
+        
+        else:
+            logger = setup_logger("SETUP")
+
         # Initialize the environment configuration
         ConfigENV.initialize()
+
+    
+
 
         # Check if all required environment variables are set
         if not ConfigENV.check_env_vars():

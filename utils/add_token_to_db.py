@@ -8,11 +8,11 @@ logger = setup_logger("RUGCHECK")
 
 
 def add_token_to_db(coin_data):
-    print(coin_data)
     db = db_connect()
     creating_table(db)
     save_coin(db, coin_data)
     db.close()
+
 
 def db_connect():
     host = ConfigENV.ENV.get("PGHOST")
@@ -25,31 +25,31 @@ def db_connect():
 
     return db
 
+
 def creating_table(db):
-    # Creating a table
+    # Define columns for the table
     columns = {
-    "id": "SERIAL PRIMARY KEY",
-    "address": "TEXT NOT NULL",
-    "name": "TEXT NOT NULL",
-    "symbol": "TEXT NOT NULL",
-    "price_usd": "DECIMAL(18, 10)",     # Adjusted to handle prices with more precision
-    "market_cap": "DECIMAL(18, 2)",    # Adjusted to allow larger values
-    "volume_5m": "DECIMAL(18, 2)",     # Adjusted to allow larger values
-    "liquidity_usd": "DECIMAL(18, 2)", # Adjusted to allow larger values
-    "fdv": "DECIMAL(18, 6)",           # Adjusted to allow larger values
-    "price_change_5m": "DECIMAL(18, 2)", # Adjusted to a reasonable precision and scale
-    "txn_buy_5min" : "INT",
-    "txn_sell_5min" : "INT",
-    "url": "TEXT NOT NULL",
-    "social_links": "TEXT NOT NULL",
-    "created_at": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
-    "updated_at": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
-}
+        "id": "SERIAL PRIMARY KEY",
+        "address": "TEXT NOT NULL",
+        "name": "TEXT NOT NULL",
+        "symbol": "TEXT NOT NULL",
+        "price_usd": "DECIMAL(18, 10)",
+        "market_cap": "DECIMAL(18, 2)",
+        "volume_5m": "DECIMAL(18, 2)",
+        "liquidity_usd": "DECIMAL(18, 2)",
+        "fdv": "DECIMAL(18, 6)",
+        "price_change_5m": "DECIMAL(18, 2)",
+        "txn_buy_5min": "INT",
+        "txn_sell_5min": "INT",
+        "url": "TEXT NOT NULL",
+        "social_links": "TEXT NOT NULL",
+        "created_at": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
+        "updated_at": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
+    }
     
+    # Create the table if it doesn't already exist
+    db.create_table(AppConfig.DB_TRADE_TABLE, columns)
 
-    
-
-    db.create_table("trades", columns)
 
 
 
@@ -57,8 +57,8 @@ def creating_table(db):
 
 
 def save_coin(db, coin_data):
-    query = """
-    INSERT INTO trades (address, name, symbol, price_usd, market_cap, volume_5m, liquidity_usd, fdv, price_change_5m, txn_buy_5min, txn_sell_5min, url, social_links)
+    query = f"""
+    INSERT INTO {AppConfig.DB_TRADE_TABLE} (address, name, symbol, price_usd, market_cap, volume_5m, liquidity_usd, fdv, price_change_5m, txn_buy_5min, txn_sell_5min, url, social_links)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
@@ -82,6 +82,3 @@ def save_coin(db, coin_data):
 
     logger.warning(f"Coin {coin_data['name']} added to the database.")
 
-
-
-   

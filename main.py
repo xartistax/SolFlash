@@ -1,5 +1,6 @@
 import asyncio
 import signal
+from app_config.app_config import AppConfig
 from services.api_client import APIClient
 from services.logger import setup_logger
 from services.env import ConfigENV
@@ -28,8 +29,20 @@ def main():
 
 if __name__ == "__main__":
     main()
-    client = HeliusWebSocketClient()
+    client = HeliusWebSocketClient(
+        socket_url=ConfigENV.HELIUS_URL,
+        socket_method="logsSubscribe", 
+        socket_id="fresh-tokens", 
+        socket_params=[
+            {"mentions": [AppConfig.LIQUIDITY_POOL.get("RADIYUM_PROGRAM_ID")]},
+            {"commitment": AppConfig.LIQUIDITY_POOL.get("COMMITMENT")}])
+
+
+    
+    
+
     asyncio.get_event_loop().run_until_complete(client.connect())
 
+   
 
     

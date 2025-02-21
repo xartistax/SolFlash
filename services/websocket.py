@@ -1,40 +1,49 @@
 import asyncio
 import json
+from time import sleep
 import websockets
 from app_config.app_config import AppConfig
 from services.env import ConfigENV
 from services.logger import setup_logger
-from utils import handle_shutdown
 from utils.cyan_message import cyan_message
-from utils.handle_transactions import handle_transaction
+from utils.logSubscribe import process_logSubscribe
 
 logger = setup_logger("WEBSOCKET")
 
 
 class HeliusWebSocketClient:
-    def __init__(self):
-        self.api_url = ConfigENV.HELIUS_URL  
-        if not self.api_url:
+    def __init__(
+            self,
+            socket_id=None,
+            socket_url=None,
+            socket_method=None,
+            socket_params=None
+            ):
+        
+        self.keep_running = True  
+        self.socket_id = socket_id
+        self.socket_method = socket_method
+        self.socket_params = socket_params
+        self.socket_url = socket_url
+
+        if not self.socket_url:
             raise ValueError("HELIUS_WSS_URL is not set in AppConfig.ENV")
 
-        self.raydium_id = AppConfig.LIQUIDITY_POOL.get("RADIYUM_PROGRAM_ID")
-        self.commitment = AppConfig.LIQUIDITY_POOL.get("COMMITMENT")
+        logger.info(cyan_message(f"WebSocket URL: {self.socket_url}"))
 
-        if not self.raydium_id or not self.commitment:
-            raise ValueError("Liquidity pool ID or commitment is not set in AppConfig.LIQUIDITY_POOL")
-
-        logger.info(cyan_message(f"WebSocket URL: {self.api_url}"))
         self.reconnect_delay = 1  # Initial backoff delay in seconds
+        sleep(self.reconnect_delay)  # Wait for the WebSocket to be fully established
+
 
     async def connect(self):
         """Connects to the Helius WebSocket and listens for log messages."""
         logger.info(cyan_message("Scanning the blockchain for new coin listings..."))
 
-        while True:
+        while self.keep_running:
             try:
-                async with websockets.connect(self.api_url) as websocket:
+                async with websockets.connect(self.socket_url) as websocket:
                     logger.info(cyan_message("Connected to WebSocket"))
-                    print(cyan_message("System initialized successfully!"))
+                    print(cyan_message(f"System initialized successfully with Url: {self.socket_url}"))
                     
 
                     # Reset backoff delay on successful connection
@@ -46,10 +55,15 @@ class HeliusWebSocketClient:
                     # Process incoming messages
                     await self.listen(websocket)
 
-            except websockets.exceptions.ConnectionClosedError as e:
-                logger.warning(f"WebSocket closed: {e}. Reconnecting...")
-            except (ConnectionRefusedError, TimeoutError) as e:
-                logger.error(f"Connection error: {e}. Retrying...")
+
+            except (websockets.exceptions.ConnectionClosedError, ConnectionRefusedError, TimeoutError) as e:
+                if not self.keep_running:
+                     break
+                logger.warning(f"WebSocket error: {e}. Reconnecting in {self.reconnect_delay} seconds...")
+                await asyncio.sleep(self.reconnect_delay)
+                self.reconnect_delay = min(self.reconnect_delay * 2, 60)
+                
+
             except asyncio.CancelledError:
                 logger.info("WebSocket listener cancelled. Exiting...")
                 break
@@ -65,47 +79,26 @@ class HeliusWebSocketClient:
         """Sends the subscription request to the WebSocket."""
         subscription_request = {
             "jsonrpc": "2.0",
-            "id": 1,
-            "method": "logsSubscribe",
-            "params": [
-                {"mentions": [self.raydium_id]},
-                {"commitment": self.commitment}
-            ]
+            "id": self.socket_id,
+            "method": self.socket_method,
+            "params": self.socket_params
         }
         await websocket.send(json.dumps(subscription_request))
         logger.info(cyan_message("Subscription request sent."))
-        cyan_message("SSubscription request sent.")
+        cyan_message("Subscription request sent.")
 
     async def listen(self, websocket):
         """Listens for messages from the WebSocket."""
         async for message in websocket:
-            try:
-                parsed = json.loads(message)
 
-                if "result" in parsed and not parsed.get("error"):
-                    logger.info(cyan_message("Subscription confirmed."))
-                    print(cyan_message("Subscription confirmed."))
-                    continue
 
-                if parsed.get("error"):
-                    logger.error(f"RPC Error: {parsed['error']}")
-                    continue
+            if self.socket_method == "logsSubscribe":
+                await process_logSubscribe(message)
 
-                val = parsed.get("params", {}).get("result", {}).get("value", {})
-                logs = val.get("logs", [])
-                signature = val.get("signature", "")
+            if self.socket_method == "getTokenAccounts":
+                print(message)
 
-                if not logs or not signature:
-                    logger.warning("No logs or signature found in message.")
-                    continue
-
-                # Process transaction asynchronously
-                asyncio.create_task(handle_transaction(signature))
-
-            except json.JSONDecodeError as e:
-                logger.error(f"Failed to decode message: {e}")
-                handle_shutdown()
-            except Exception as e:
-                logger.error(f"Unexpected error in message processing: {e}")
-                handle_shutdown()
-
+    async def disconnect(self):
+        """Disconnects the WebSocket."""
+        logger.info("Disconnecting WebSocket...")
+        self.keep_running = False

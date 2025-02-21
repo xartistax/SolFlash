@@ -113,3 +113,13 @@ class PostgresDB:
             result = self.execute_query(query)
             logger.info(f"Records fetched from {table_name}")
             return result
+
+
+    def truncate_table(self, table_name):
+        """Truncate a table in the database (remove all records)."""
+        try:
+            query = sql.SQL("TRUNCATE TABLE {}").format(sql.Identifier(table_name))
+            self.execute_update(query)
+            logger.info(f"Table truncated: {table_name}")
+        except Exception as e:
+            logger.error(f"Error truncating table {table_name}: {e}")

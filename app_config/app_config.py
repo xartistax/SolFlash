@@ -3,7 +3,12 @@ class AppConfig:
     BOTNAME = "SOLFLASH"
 
     MAINNET = True
-    
+
+    DEVELOPMENT = True
+
+    DB_TRADE_TABLE = "trades"
+
+
     PAPER_TRADER = {
         "ENABLED": True,
         "SETTINGS" : {
@@ -17,7 +22,7 @@ class AppConfig:
     LOGGER = {
         "LOG_DIR": "logs",
         "FILE_LEVEL": "ERROR",  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
-        "CONSOLE_LEVEL": "WARNING",  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
+        "CONSOLE_LEVEL": "ERROR",  # Change to DEBUG, INFO, WARNING, ERROR, or CRITICAL as needed
         "TOKENFILE_NAME": "tokens.txt"
     }
 

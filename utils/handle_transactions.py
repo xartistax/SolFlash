@@ -67,7 +67,7 @@ async def handle_transaction(signature: str):
             rugcheck_data = await check_rug_pull(token)
 
             if not RUG_CHECKER.is_valid(token, rugcheck_data):
-                logger.warning(f"Token {token} failed the rug pull check and is skipped.")  
+                logger.debug(f"Token {token} failed the rug pull check and is skipped.")  
                 return  # Return only if the token fails the rug check
         
         # Retry logic for DexScreener data
@@ -79,12 +79,12 @@ async def handle_transaction(signature: str):
                 if dexscreener_data is not None:
                     break  # Exit the loop if DexScreener data is valid
                 else:
-                    logger.warning(f"DexScreener Data for Token {token} is None. Retrying... ({retries + 1}/{MAX_RETRIES})")
+                    logger.debug(f"DexScreener Data for Token {token} is None. Retrying... ({retries + 1}/{MAX_RETRIES})")
                     retries += 1
                     if retries < MAX_RETRIES:
                         await asyncio.sleep(RETRY_DELAY)  # Wait before retrying
                     else:
-                        logger.warning(f"Max retries reached for Token {token}. Skipping...")
+                        logger.debug(f"Max retries reached for Token {token}. Skipping...")
                         return  # Exit if max retries reached
 
             except (KeyError, ValueError, TypeError, ConnectionError) as e:
@@ -92,7 +92,7 @@ async def handle_transaction(signature: str):
                 return  # Return to prevent processing an invalid token
 
         if not COIN_FILTER.is_valid(dexscreener_data):
-            logger.warning(f"Token {token} failed the coin filter check and is skipped.")  
+            logger.debug(f"Token {token} failed the coin filter check and is skipped.")  
             return
 
         process_token(dexscreener_data)

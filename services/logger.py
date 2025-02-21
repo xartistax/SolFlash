@@ -24,7 +24,7 @@ LOGGING_LEVEL_MAP = {
 
 # Log-Verzeichnis erstellen
 LOG_DIR = AppConfig.LOGGER.get("LOG_DIR")
-os.makedirs(LOG_DIR, exist_ok=True)
+
 
 
 class ColorizedFileFormatter(logging.Formatter):
@@ -38,6 +38,7 @@ class ColorizedFileFormatter(logging.Formatter):
 
 def setup_logger(name="MainLogger"):
     """Erstellt einen Logger mit täglichem Logfile und farbigen Logs in der Datei."""
+    os.makedirs(LOG_DIR, exist_ok=True)
     logger = logging.getLogger(name)
     
     if logger.hasHandlers():
